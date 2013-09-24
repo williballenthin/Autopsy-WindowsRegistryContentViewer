@@ -9,7 +9,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.logging.Level;
 import javax.swing.JPanel;
 import org.openide.nodes.Node;
@@ -28,11 +27,11 @@ public class WindowsRegistryContentViewer extends JPanel implements DataContentV
     
     public WindowsRegistryContentViewer() {
         super(new BorderLayout());
-        logger.log(Level.INFO, "Created Windows Registry Viewer instance: " + this);
+        logger.log(Level.INFO, "Created Windows Registry Viewer instance: {0}", this);
     }
     
     private void setDataView(Content content) {
-        logger.log(Level.INFO, "setDataView: " + this);
+        logger.log(Level.INFO, "setDataView: {0}", this);
         if (content == null) {
             this.resetComponent();
             return;
@@ -50,7 +49,6 @@ public class WindowsRegistryContentViewer extends JPanel implements DataContentV
         }
         
         byte[] data = new byte[(int)content.getSize()];
-        ByteBuffer buf = ByteBuffer.allocate((int)content.getSize());
         
         // TODO(wb): Lazy!
         int bytesRead = 0;
@@ -59,11 +57,7 @@ public class WindowsRegistryContentViewer extends JPanel implements DataContentV
         } catch (TskException ex) {
             logger.log(Level.WARNING, "Failed to read file content.", ex);
         }
-        
-        buf = ByteBuffer.allocate((int)content.getSize());
-        buf.position(0x0);
-        buf.order(ByteOrder.LITTLE_ENDIAN);
-        buf.put(data);
+        ByteBuffer buf = ByteBuffer.wrap(data);
         
         RegistryHive h = new RegistryHiveBuffer(buf);
         this._regview = new RejView(h);
@@ -74,7 +68,7 @@ public class WindowsRegistryContentViewer extends JPanel implements DataContentV
     
     @Override
     public void setNode(Node node) {
-        logger.log(Level.INFO, "setNode: " + this);
+        logger.log(Level.INFO, "setNode: {0}", this);
         if (!isSupported(node)) {
             setDataView(null);
             return;
@@ -149,11 +143,7 @@ public class WindowsRegistryContentViewer extends JPanel implements DataContentV
         } catch (TskException ex) {
             logger.log(Level.WARNING, "Failed to read file content.", ex);
         }
-        
-        ByteBuffer buf = ByteBuffer.allocate(0x4000);
-        buf.position(0x0);
-        buf.order(ByteOrder.LITTLE_ENDIAN);
-        buf.put(header);
+        ByteBuffer buf = ByteBuffer.wrap(header);
         
         RegistryHive hive = new RegistryHiveBuffer(buf);
         try {
