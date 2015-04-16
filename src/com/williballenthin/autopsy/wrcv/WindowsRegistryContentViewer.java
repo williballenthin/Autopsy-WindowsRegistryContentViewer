@@ -155,9 +155,9 @@ public class WindowsRegistryContentViewer extends JPanel implements DataContentV
     }
 
     @Override
-    public int isPreferred(Node node, boolean isSupported) {
+    public int isPreferred(Node node) {
         logger.log(Level.INFO, "isPreferred: " + this);
-        if (isSupported) {
+        if (isSupported(node)) {
             return 1;
         } else {
             return 0;
