@@ -21,7 +21,7 @@ import org.sleuthkit.datamodel.TskException;
 @ServiceProvider(service = DataContentViewer.class)
 public class WindowsRegistryContentViewer extends JPanel implements DataContentViewer {
 
-    private static final int ONE_HUNDRED_MEGABYTES = 1024 * 1024 * 100;
+//    private static final int ONE_HUNDRED_MEGABYTES = 1024 * 1024 * 100;
     private RejView _regview;
     private static final Logger logger = Logger.getLogger(WindowsRegistryContentViewer.class.getName());
     
@@ -39,11 +39,11 @@ public class WindowsRegistryContentViewer extends JPanel implements DataContentV
         
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         
-        if (content.getSize() > ONE_HUNDRED_MEGABYTES) {
+/*        if (content.getSize() > ONE_HUNDRED_MEGABYTES) {
             logger.log(Level.WARNING,  "Unable to view Registry hives greater than 100MB");
             return;
         }
-        
+*/        
         if (content.getSize() == 0) {
             return;
         }
@@ -130,7 +130,7 @@ public class WindowsRegistryContentViewer extends JPanel implements DataContentV
             return false;
         }
         
-        if (content.getSize() == 0 || content.getSize() > ONE_HUNDRED_MEGABYTES) {
+        if (content.getSize() == 0 ) {
             return false;
         }
         
